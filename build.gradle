@@ -1,0 +1,67 @@
+
+// ajout des informations générale sur le build
+subprojects {
+
+  group = 'fr.soat.article.gradle'
+  version = '1.0.0-SNAPSHOT'
+
+  repositories {
+    mavenCentral()
+  }
+}
+
+// définition du projet domain
+project(':domain') {
+  apply plugin: 'groovy'
+}
+
+// définition du projet dataaccess
+project(':dataaccess') {
+  apply plugin: 'groovy'
+
+   repositories {
+     maven { url "http://repository.codehaus.org" }
+   }
+
+   dependencies {
+     compile project(':domain')
+     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.5.2'
+   }
+}
+
+// définition du projet services
+project(':services') {
+  apply plugin: 'java'
+  sourceCompatibily = 1.6
+
+  dependencies {
+    compile project(':dataaccess')
+    testCompile 'junit:junit:4.10'
+  }
+}
+
+// Spécification de la version de groovy souhaitée pour nos projets groovy
+// nos projets groovy = tous sauf le projet 'services'
+configure( subprojects.findAll { it.name != 'services'} ) {
+  apply plugin: 'groovy'
+  dependencies {
+    groovy group:'org.codehaus.groovy', name: 'groovy', version: '1.8.3'
+  }
+}
+
+// Initialisation des projets pour une utilisation eclipse
+subprojects {
+ 
+  apply plugin: 'eclipse'
+
+  task initProject(description: 'Initialize source directories') << { task ->
+    task.project.sourceSets.collect{ it.allSource.srcDirs }.flatten().each {
+      println "Creating $it"
+      it.mkdirs()
+    }
+  }
+
+  tasks.eclipse.dependsOn initProject
+  tasks.eclipse.dependsOn cleanEclipse
+}
+
