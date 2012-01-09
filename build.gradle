@@ -18,15 +18,6 @@ project(':domain') {
 // définition du projet dataaccess
 project(':dataaccess') {
   apply plugin: 'groovy'
-
-   repositories {
-     maven { url "http://repository.codehaus.org" }
-   }
-
-   dependencies {
-     compile project(':domain')
-     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.5.2'
-   }
 }
 
 // définition du projet services
@@ -61,7 +52,9 @@ subprojects {
     }
   }
 
-  tasks.eclipse.dependsOn initProject
-  tasks.eclipse.dependsOn cleanEclipse
+  // il est préférable de forcer un cleanEclipse avant 
+  // une tâche eclipse pour ne pas avoir de ligne dupliquée 
+  // dans les fichiers générées par le plugin eclipse
+  tasks.eclipse.dependsOn cleanEclipse 
 }
 
