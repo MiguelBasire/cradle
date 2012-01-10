@@ -1,4 +1,9 @@
-.gradle/
+.metadata/
+.settings/
+.project
+.classpath
 
+.gradle/
+build/
 
 *.swp
