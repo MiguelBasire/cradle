@@ -56,5 +56,8 @@ subprojects {
   // une tâche eclipse pour ne pas avoir de ligne dupliquée 
   // dans les fichiers générées par le plugin eclipse
   tasks.eclipse.dependsOn cleanEclipse 
+  // permet la génération de la structure du projet avant la génération .classpath eclipse
+  tasks.eclipseClasspath.dependsOn initProject
 }
+
 
