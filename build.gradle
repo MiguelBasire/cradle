@@ -18,6 +18,7 @@ project(':domain') {
 // définition du projet dataaccess
 project(':dataaccess') {
   apply plugin: 'groovy'
+  dependencies { compile project(':domain') }
 }
 
 // définition du projet services
