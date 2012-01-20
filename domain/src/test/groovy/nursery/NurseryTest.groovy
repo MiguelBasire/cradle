@@ -19,6 +19,17 @@ class NurseryTest extends GroovyTestCase {
 		
 		nurseryUnderTest.makeThemSleep();
 	}
+	
+	void testMakeThemSleep_AllBabiesShouldBeAsleep(){
+		
+		3.times { nurseryUnderTest.cradles[it].baby = new Baby(state: Baby.State.CRYING)}
+		
+		nurseryUnderTest.makeThemSleep()
+		
+		assertEquals 3, nurseryUnderTest.babies().size()
+		nurseryUnderTest.babies().each  { assertEquals "A baby is not sleeping", Baby.State.ASLEEP, it.state }
+	}
+	
 		
 	
 	void testGetUpEveryone_NoBabyShouldRemainAsleep(){
@@ -34,7 +45,7 @@ class NurseryTest extends GroovyTestCase {
 		babies.each { assertNotSame "the baby is asleep !",it.state, Baby.State.ASLEEP }
 	}
 	
-	void testRelease_TheBabySouldNotRemainInTheNursery(){
+	void testRelease_TheBabyShouldNotRemainInTheNursery(){
 		
 		def baby = new Baby()
 		nurseryUnderTest.cradles.add(new Cradle(baby: baby))
