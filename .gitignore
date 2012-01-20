@@ -1,8 +1,11 @@
+# eclipse related files/directories
 .metadata/
 .settings/
 .project
 .classpath
+bin/
 
+# gradle related directories
 .gradle/
 build/
 
