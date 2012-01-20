@@ -8,6 +8,11 @@ subprojects {
   repositories {
     mavenCentral()
   }
+  configurations { testCompile }
+  dependencies {
+    testCompile 'junit:junit:4.10'
+  }
+
 }
 
 // définition du projet domain
@@ -28,7 +33,6 @@ project(':services') {
 
   dependencies {
     compile project(':dataaccess')
-    testCompile 'junit:junit:4.10'
   }
 }
 
@@ -61,4 +65,14 @@ subprojects {
   tasks.eclipseClasspath.dependsOn initProject
 }
 
+// configure test console printing report
+subprojects {
+  test {
+    afterTest { desc, result ->
+      if(result.resultType  == TestResult.ResultType.FAILURE){
+        logger.quiet("${result.resultType} : ${desc.name}(${desc.className}) -> ${result.exception.message}" )
+      }
+    }
+  }
 
+}
