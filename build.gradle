@@ -1,9 +1,11 @@
 
+def version_number = "1.0.0"
+
 // ajout des informations générale sur le build
 subprojects {
 
   group = 'fr.soat.article.gradle'
-  version = '1.0.0-SNAPSHOT'
+  //version = "${version_numer}-SNAPSHOT"
 
   repositories {
     mavenCentral()
@@ -74,5 +76,28 @@ subprojects {
       }
     }
   }
+}
 
+
+// release and deployement in repo
+subprojects {
+  apply plugin: 'maven'
+
+  task release(description: 'fige une version avant son déploiement') {}
+
+  gradle.taskGraph.whenReady {taskGraph ->
+    if (taskGraph.hasTask(release)) {
+        version = version_number 
+    } else {
+        version = version_number+"-SNAPSHOT"
+    }
+  }
+
+  uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://c:/integration-repo")
+        }
+    }
+  }
 }
